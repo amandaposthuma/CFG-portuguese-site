@@ -1,0 +1,1110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CFG International | Claudia Frankel Grosman</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink:    #383C24;
+      --olive:  #215732;
+      --olive2: #1a4428;
+      --paper:  #F5F4F1;
+      --white:  #FAFAF8;
+      --stone:  #E8E7E3;
+      --gray:   #888882;
+      --rule:   rgba(56,60,36,.12);
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--paper);
+      color: var(--ink);
+      overflow-x: hidden;
+      opacity: 0;
+      animation: bodyIn .45s ease .05s forwards;
+    }
+    @keyframes bodyIn { to { opacity: 1; } }
+
+    #prog { position: fixed; top: 0; left: 0; z-index: 500; height: 1px; width: 0%; background: var(--olive); }
+
+    /* ══ NAV ══ */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.1rem 4rem;
+      background: rgba(245,244,241,.97);
+      border-bottom: 1px solid var(--rule);
+      backdrop-filter: blur(20px);
+      transform: translateY(-100%);
+      animation: navIn .6s cubic-bezier(.22,1,.36,1) .1s forwards;
+      transition: box-shadow .3s;
+    }
+    nav.scrolled { box-shadow: 0 1px 28px rgba(56,60,36,.07); }
+    @keyframes navIn { to { transform: none; } }
+
+    .logo { text-decoration: none; }
+    .logo-svg { height: 68px; width: auto; overflow: visible; }
+
+    .nav-links { display: flex; align-items: center; gap: 2.4rem; list-style: none; }
+    .nav-links a {
+      font-size: .58rem; letter-spacing: .22em; text-transform: uppercase;
+      color: rgba(56,60,36,.32); text-decoration: none; transition: color .2s;
+    }
+    .nav-links a:hover { color: var(--olive); }
+    .nav-cta {
+      background: #215732; color: var(--white) !important;
+      padding: .55rem 1.5rem; transition: background .22s, transform .12s !important;
+      position: relative; overflow: hidden;
+    }
+    .nav-cta:hover { background: #2d7344 !important; }
+    .nav-cta:active { background: #174024 !important; transform: scale(0.97); }
+
+    /* ══ HERO ══ */
+    #hero { height: 100vh; display: flex; flex-direction: column; background: var(--paper); }
+    .hero-main { flex: 1; display: grid; grid-template-columns: 3fr 2fr; min-height: 0; position: relative; }
+
+    .hero-left {
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 7rem 3.5rem 3.5rem 4rem;
+      border-right: 1px solid var(--rule);
+      overflow: hidden;
+      min-height: 0;
+    }
+    .hl-clip { overflow: hidden; }
+    h1 {
+      font-family: 'Cormorant', serif;
+      font-size: clamp(2.2rem, 3.2vw, 4rem);
+      font-weight: 400; line-height: 1.03; letter-spacing: -.018em; color: var(--ink);
+    }
+    h1 em { font-style: italic; font-weight: 300; color: var(--olive); }
+    .hl { display: block; transform: translateY(110%); animation: slideUp .75s cubic-bezier(.22,1,.36,1) forwards; }
+    .hl:nth-child(1) { animation-delay: .6s; }
+    .hl:nth-child(2) { animation-delay: .75s; }
+    .hl:nth-child(3) { animation-delay: .9s; }
+    @keyframes slideUp { to { transform: none; } }
+
+    .hero-sub {
+      font-size: .84rem; font-weight: 300; line-height: 1.88; color: var(--gray);
+      max-width: 420px; margin-top: 2rem; margin-bottom: 2.8rem;
+      opacity: 0; animation: upFade .5s ease 1.05s forwards;
+    }
+    .hero-btns { display: flex; gap: .9rem; opacity: 0; animation: upFade .5s ease 1.18s forwards; }
+    .btn {
+      font-family: 'DM Sans', sans-serif;
+      font-size: .58rem; letter-spacing: .2em; text-transform: uppercase;
+      text-decoration: none; padding: .85rem 2rem; transition: all .22s; display: inline-block;
+    }
+    .btn-ink   { background: var(--ink); color: var(--white); }
+    .btn-ink:hover  { background: var(--olive); }
+    .btn-ghost { border: 1px solid rgba(56,60,36,.18); color: var(--ink); }
+    .btn-ghost:hover { border-color: var(--olive); color: var(--olive); }
+    .btn-teal {
+      background: #215732; color: var(--white);
+      position: relative; overflow: hidden;
+      transition: background .22s, transform .12s;
+    }
+    .btn-teal:hover { background: #2d7344; }
+    .btn-teal:active {
+      background: #174024;
+      transform: scale(0.97);
+    }
+    .btn-teal::after {
+      content: ''; position: absolute; inset: 0;
+      background: rgba(255,255,255,0.18);
+      opacity: 0; transition: opacity .18s;
+    }
+    .btn-teal:active::after { opacity: 1; }
+
+    .hero-stats {
+      display: flex; gap: 0; margin-top: 3.5rem;
+      padding-top: 1.8rem; border-top: 1px solid var(--rule);
+      opacity: 0; animation: upFade .5s ease 1.3s forwards;
+    }
+    .stat-item { padding-right: 2.8rem; margin-right: 2.8rem; border-right: 1px solid var(--rule); }
+    .stat-item:last-child { border-right: none; padding-right: 0; margin-right: 0; }
+    .stat-n { font-family: 'Cormorant', serif; font-size: 2.8rem; font-weight: 400; line-height: 1; color: var(--olive); }
+    .stat-l { font-size: .5rem; letter-spacing: .17em; text-transform: uppercase; color: var(--gray); opacity: .65; margin-top: .22rem; }
+    @keyframes upFade { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+
+    /* ══ RIGHT COLUMN: BIO ══ */
+    .hero-right {
+      display: flex; flex-direction: column; justify-content: flex-start;
+      padding: 0 3.5rem 3rem 3.5rem;
+      border-left: 1px solid var(--rule);
+      overflow-x: hidden;
+      overflow-y: auto;
+      min-height: 0;
+    }
+    .bio-col { margin: auto 0; padding-top: 7rem; padding-bottom: 2rem; }
+
+    /* Network container — square */
+    .disc-network {
+      position: relative; width: 100%; aspect-ratio: 1;
+      opacity: 0; transform: translateY(20px);
+      transition: opacity 0.9s ease, transform 0.9s ease;
+    }
+    .disc-network.on { opacity: 1; transform: none; }
+
+    /* SVG lines layer */
+    .disc-net-svg {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      pointer-events: none;
+    }
+    .disc-net-line {
+      stroke: rgba(56,60,36,0.09); stroke-width: 0.8; stroke-dasharray: 3 5;
+      transition: stroke 0.35s ease, stroke-width 0.35s ease;
+    }
+    .disc-net-line.lit { stroke: rgba(33,87,50,0.65); stroke-width: 1.5; stroke-dasharray: none; }
+    .disc-ring { stroke: rgba(33,87,50,0.10); stroke-width: 0.7; fill: none; transition: stroke 0.5s ease; }
+    .disc-network.on .disc-ring { stroke: rgba(33,87,50,0.18); }
+
+    /* Central hub */
+    .disc-hub {
+      position: absolute; transform: translate(-50%,-50%);
+      z-index: 3; text-align: center; cursor: default;
+      opacity: 0; transition: opacity 0.5s ease 0.5s;
+    }
+    .disc-hub-text {
+      font-family: 'Cormorant', serif;
+      font-size: clamp(1.6rem,2.6vw,2.4rem); font-weight: 400;
+      color: var(--ink); letter-spacing: 0.04em; line-height: 1; display: block;
+    }
+    .disc-hub-sub {
+      font-size: 0.52rem; letter-spacing: 0.3em; text-transform: uppercase;
+      color: var(--olive); display: block; margin-top: 0.28rem;
+    }
+    .disc-hub::before {
+      content: ''; position: absolute; top: 50%; left: 50%;
+      width: 90px; height: 90px; transform: translate(-50%,-50%);
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(33,87,50,0.07) 0%, transparent 70%);
+      animation: hubGlow 3s ease-in-out infinite; pointer-events: none;
+    }
+    @keyframes hubGlow {
+      0%,100% { opacity:.5; transform:translate(-50%,-50%) scale(.9); }
+      50%      { opacity:1;  transform:translate(-50%,-50%) scale(1.2); }
+    }
+
+    /* Nodes */
+    .disc-node {
+      position: absolute; transform: translate(-50%,-50%);
+      cursor: pointer; z-index: 2; opacity: 0; transition: opacity .5s ease;
+    }
+    .disc-network.on .disc-node { opacity: 1; }
+    .disc-node-inner {
+      display: flex; flex-direction: column; align-items: center; gap: 5px; position: relative;
+    }
+    .disc-node-dot {
+      width: 6px; height: 6px; background: rgba(33,87,50,0.35); flex-shrink: 0;
+      transition: background .3s ease, box-shadow .3s ease, transform .3s ease;
+    }
+    .disc-node:hover .disc-node-dot,
+    .disc-node.active .disc-node-dot {
+      background: var(--olive); box-shadow: 0 0 16px rgba(33,87,50,0.55); transform: scale(1.9);
+    }
+    .disc-node-label {
+      font-size: 0.62rem; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--ink); white-space: nowrap; opacity: 0.5; text-align: center;
+      transition: color .3s ease, opacity .3s ease;
+    }
+    .disc-node:hover .disc-node-label,
+    .disc-node.active .disc-node-label { color: var(--olive); opacity: 1; }
+
+    /* Service detail card */
+    .disc-detail { margin-top: 1.5rem; position: relative; min-height: 5rem; }
+    .disc-detail-default {
+      text-align: center; transition: opacity .28s ease;
+      padding-top: 1.6rem;
+    }
+    .disc-hint { font-size: .44rem; letter-spacing: .22em; text-transform: uppercase; color: rgba(56,60,36,.22); }
+    .disc-detail-panel {
+      position: absolute; top: 0; left: 0; right: 0;
+      background: rgba(33,87,50,0.93);
+      padding: 1rem 1.4rem 1.1rem;
+      opacity: 0; pointer-events: none;
+      transition: opacity .28s ease, transform .3s ease;
+      transform: translateY(8px); text-align: center;
+    }
+    .disc-detail-panel.visible { opacity: 1; pointer-events: auto; transform: none; }
+    .disc-detail-name {
+      font-size: .46rem; letter-spacing: .28em; text-transform: uppercase;
+      color: rgba(250,250,248,.52); margin-bottom: .45rem;
+    }
+    .disc-detail-desc { font-size: .78rem; font-weight: 300; line-height: 1.68; color: rgba(250,250,248,.88); }
+
+    /* ══ PAGE 2 ══ */
+    #page2 { background: var(--white); padding: 5rem 4rem 6rem; }
+    .page2-grid { max-width: 1200px; margin: 0 auto; }
+
+    .section-label {
+      font-size: .53rem; letter-spacing: .3em; text-transform: uppercase;
+      color: var(--olive); display: flex; align-items: center; gap: .75rem; margin-bottom: 2.2rem;
+    }
+    .section-label::before { content: ''; width: 18px; height: 1px; background: var(--olive); }
+
+    .tl-head { margin-bottom: 2.8rem; }
+    .tl-head h2 {
+      font-family: 'Cormorant', serif;
+      font-size: clamp(2.2rem, 3vw, 3.6rem);
+      font-weight: 400; line-height: 1.06; color: var(--ink); margin-top: .5rem;
+    }
+    .tl-head h2 em { font-style: italic; font-weight: 300; color: var(--olive); }
+
+    /* ── Card tile grid ── */
+    .tile-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0; }
+    .tile {
+      background: var(--white); padding: 1.8rem 1.8rem 1.6rem;
+      display: flex; flex-direction: column;
+      border: 1px solid var(--rule); margin: -1px 0 0 -1px;
+      text-decoration: none; color: inherit;
+      transition: background .28s, box-shadow .28s, transform .28s;
+    }
+    .tile:hover { background: var(--paper); box-shadow: 0 6px 28px rgba(56,60,36,.07); transform: translateY(-2px); z-index: 2; }
+    .tile-type {
+      display: inline-flex; background: var(--olive); color: var(--white);
+      font-size: .40rem; letter-spacing: .24em; text-transform: uppercase;
+      padding: .28rem .7rem; margin-bottom: 1.1rem; width: fit-content;
+    }
+    .tile-title {
+      font-family: 'DM Sans', sans-serif;
+      font-size: clamp(1rem, 1.15vw, 1.2rem);
+      font-weight: 400;
+      margin-bottom: .75rem; flex: 1; line-height: 1.35; color: var(--ink);
+    }
+    .tile-desc {
+      font-size: .72rem; line-height: 1.70; color: var(--gray); margin-bottom: 1.4rem;
+      display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .tile-link {
+      display: inline-flex; color: var(--white); background: var(--ink);
+      padding: .5rem 1rem; font-size: .46rem; letter-spacing: .18em; text-transform: uppercase;
+      text-decoration: none; transition: background .22s; align-self: flex-start;
+    }
+    .tile-link:hover { background: var(--olive); }
+
+    /* ── Bio ── */
+    .bio-col { display: flex; flex-direction: column; gap: 1.4rem; }
+    .photo-area { display: flex; align-items: center; gap: 1.4rem; padding-bottom: 1.8rem; border-bottom: 1px solid var(--rule); }
+    .photo-block {
+      width: 108px; height: 108px; border-radius: 50%;
+      background: var(--stone); overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; border: 1px solid var(--rule);
+    }
+    .photo-block img { width: 100%; height: 100%; object-fit: cover; object-position: center top; }
+    .bio-name { font-family: 'Cormorant', serif; font-size: clamp(1.6rem,2vw,2.1rem); font-weight: 400; line-height: 1.08; color: var(--ink); }
+    .bio-name em { font-style: italic; font-weight: 300; color: var(--olive); }
+    .bio-role { font-size: .5rem; letter-spacing: .2em; text-transform: uppercase; color: var(--gray); opacity: .6; margin-top: .35rem; }
+    .bio-p { font-size: .8rem; font-weight: 300; line-height: 1.88; color: var(--gray); }
+    .cred-list { display: flex; flex-direction: column; }
+    .cred {
+      display: flex; align-items: center; gap: .8rem;
+      padding: .48rem 0; border-bottom: 1px solid var(--rule);
+      font-size: .72rem; font-weight: 300; color: rgba(56,60,36,.72);
+    }
+    .cred:first-child { border-top: 1px solid var(--rule); }
+    .cred-dot { width: 3px; height: 3px; background: var(--olive); flex-shrink: 0; border-radius: 50%; }
+    .cred-section-label {
+      font-size: .6rem; letter-spacing: .22em; text-transform: uppercase;
+      color: var(--olive); padding: .6rem 0 .25rem; font-weight: 500;
+    }
+    /* Bio expand/collapse */
+    .bio-toggle-btn {
+      display: inline-flex; align-items: center; gap: .5rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: .52rem; letter-spacing: .22em; text-transform: uppercase;
+      color: var(--olive); cursor: pointer; border: none; background: none;
+      padding: 0; transition: color .2s; margin-top: -.2rem;
+    }
+    .bio-toggle-btn:hover { color: var(--olive2); }
+    .bio-toggle-arrow { display: inline-block; transition: transform .38s cubic-bezier(.22,1,.36,1); font-style: normal; }
+    .bio-toggle-btn.open .bio-toggle-arrow { transform: rotate(180deg); }
+    .bio-expandable {
+      max-height: 0; overflow: hidden;
+      transition: max-height .55s cubic-bezier(.22,1,.36,1), opacity .4s ease;
+      opacity: 0; pointer-events: none;
+    }
+    .bio-expandable.open { max-height: 700px; opacity: 1; pointer-events: auto; }
+
+    .contact-strip { display: flex; flex-direction: column; gap: .6rem; padding-top: 1.4rem; border-top: 1px solid var(--rule); }
+    .c-item { display: flex; align-items: center; gap: .8rem; }
+    .c-ico {
+      width: 32px; height: 32px; border: 1px solid var(--rule);
+      background: var(--paper); display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; transition: background .2s, border-color .2s;
+    }
+    .c-item:hover .c-ico { background: var(--olive); border-color: var(--olive); }
+    .c-item:hover .c-ico svg { stroke: var(--white); }
+    .c-ico svg { width: 12px; height: 12px; stroke: var(--olive); fill: none; stroke-width: 1.5; transition: stroke .2s; }
+    .c-link { font-size: .78rem; font-weight: 300; color: var(--gray); text-decoration: none; transition: color .2s; }
+    .c-link:hover { color: var(--olive); }
+
+    /* ══ FOOTER ══ */
+    footer {
+      background: var(--stone); padding: 1.8rem 4rem;
+      display: flex; justify-content: space-between; align-items: center;
+      border-top: 1px solid var(--rule);
+    }
+    .f-copy { font-size: .54rem; font-weight: 400; color: rgba(56,60,36,.42); letter-spacing: .08em; }
+
+    /* ══ REVEAL ══ */
+    .r { opacity: 0; transform: translateY(18px); transition: opacity .68s ease, transform .68s cubic-bezier(.22,1,.36,1); }
+    .r.on { opacity: 1; transform: none; }
+    .d1 { transition-delay: .1s; } .d2 { transition-delay: .2s; }
+    .d3 { transition-delay: .3s; } .d4 { transition-delay: .4s; }
+
+    /* ══ AMBIENT MOVEMENT ══ */
+    /* Slow ambient orb in hero background */
+    #hero { position: relative; overflow: hidden; }
+    #hero::before {
+      content: ''; position: absolute; top: -15%; right: 5%;
+      width: 600px; height: 600px; border-radius: 50%; pointer-events: none; z-index: 0;
+      background: radial-gradient(circle, rgba(33,87,50,0.05) 0%, transparent 65%);
+      animation: orbFloat 14s ease-in-out infinite;
+    }
+    #hero::after {
+      content: ''; position: absolute; bottom: 10%; left: 15%;
+      width: 380px; height: 380px; border-radius: 50%; pointer-events: none; z-index: 0;
+      background: radial-gradient(circle, rgba(33,87,50,0.03) 0%, transparent 65%);
+      animation: orbFloat 18s ease-in-out infinite reverse;
+    }
+    @keyframes orbFloat {
+      0%,100% { transform: translate(0,0) scale(1); }
+      33%     { transform: translate(-24px, 18px) scale(1.06); }
+      66%     { transform: translate(18px,-14px) scale(0.96); }
+    }
+    .hero-left, .hero-right { position: relative; z-index: 1; }
+
+    /* Decorative animated line above h1 */
+
+    /* Photo gentle float */
+    .photo-block img { animation: photoFloat 7s ease-in-out infinite; }
+    @keyframes photoFloat {
+      0%,100% { transform: translateY(0px); }
+      50%     { transform: translateY(-5px); }
+    }
+
+    /* Stat numbers slow breathe */
+    .stat-n { animation: statBreathe 5s ease-in-out infinite; }
+    .stat-item:nth-child(2) .stat-n { animation-delay: 1.5s; }
+    .stat-item:nth-child(3) .stat-n { animation-delay: 3s; }
+    @keyframes statBreathe {
+      0%,100% { opacity: 1; }
+      50%     { opacity: 0.72; }
+    }
+
+    /* Tile cards — stagger lift on hover */
+    .tile { will-change: transform; }
+
+    /* Page 2 ambient glow */
+    #page2 { position: relative; overflow: hidden; }
+    #page2::before {
+      content: ''; position: absolute; top: -10%; right: -5%;
+      width: 500px; height: 500px; border-radius: 50%; pointer-events: none; z-index: 0;
+      background: radial-gradient(circle, rgba(33,87,50,0.04) 0%, transparent 60%);
+      animation: orbFloat 20s ease-in-out infinite;
+    }
+    .page2-grid { position: relative; z-index: 1; }
+
+    /* ══ MOVING DOT PATTERN ══ */
+    .hero-pattern {
+      position: absolute; inset: 0; z-index: 0; pointer-events: none;
+      background-image: radial-gradient(circle, rgba(33,87,50,0.09) 1px, transparent 1px);
+      background-size: 28px 28px;
+      animation: patternDrift 40s linear infinite;
+      opacity: 1;
+    }
+    @keyframes patternDrift {
+      0%   { background-position: 0 0; }
+      100% { background-position: 56px 56px; }
+    }
+
+    /* ══ LOGO SHIMMER ══ */
+    @keyframes cfgShimmer {
+      0%, 70%, 100% { opacity: 1; }
+      85% { opacity: 0.6; }
+    }
+    .logo-svg { animation: cfgShimmer 8s ease-in-out infinite; }
+
+    /* ══ MARQUEE STRIP ══ */
+    .marquee-strip {
+      background: #215732; overflow: hidden;
+      padding: 1rem 0; border-top: none; border-bottom: none;
+      white-space: nowrap; position: relative;
+    }
+    .marquee-track {
+      display: inline-flex; gap: 0;
+      animation: marqueeScroll 38s linear infinite;
+    }
+    .marquee-track span {
+      font-family: 'DM Sans', sans-serif;
+      font-size: .68rem; letter-spacing: .28em; text-transform: uppercase;
+      color: rgba(250,250,248,.75); padding: 0 2.8rem;
+    }
+    .marquee-track .marquee-sep {
+      color: rgba(250,250,248,.3); padding: 0; letter-spacing: 0;
+    }
+    @keyframes marqueeScroll {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* Cred item hover highlight */
+    .cred { transition: background .2s, padding-left .2s; cursor: default; }
+    .cred:hover { background: rgba(33,87,50,0.04); padding-left: .5rem; }
+    .cred-date { font-size: .62rem; color: var(--gray); letter-spacing: .04em; margin-left: .35rem; opacity: .8; }
+
+    /* ══ STAT-12 THREE-LINE ══ */
+    .stat-12 { display: flex; flex-direction: column; gap: .1rem; }
+    .stat-12-sm {
+      font-family: 'DM Sans', sans-serif;
+      font-size: .44rem; letter-spacing: .18em; text-transform: uppercase;
+      color: var(--gray); opacity: .6; font-weight: 400;
+    }
+
+    /* ══ RESPONSIVE ══ */
+    @media (max-width: 1100px) {
+      .hero-main { grid-template-columns: 1fr; }
+      .hero-right { display: none; }
+      .hero-left { border-right: none; padding: 7rem 2rem 3.5rem; }
+      .page2-grid { grid-template-columns: 1fr; }
+      .bio-col { position: static; }
+    }
+    @media (max-width: 960px) {
+      nav { padding: 1rem 1.6rem; }
+      #page2 { padding: 5rem 1.6rem; }
+      .tile-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 600px) {
+      h1 { font-size: 2.8rem; }
+      .stat-item { padding-right: 2rem; margin-right: 2rem; }
+      .nav-links li:not(:last-child) { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="prog"></div>
+
+  <!-- NAV -->
+  <nav id="nav">
+    <a href="#hero" class="logo">
+      <svg class="logo-svg" viewBox="0 0 240 72" fill="none">
+        <text x="2" y="46" font-family="Cormorant, Georgia, serif" font-size="48" font-weight="400" fill="#215732" letter-spacing="3">CFG</text>
+        <text x="2" y="64" font-family="DM Sans, sans-serif" font-size="11" font-weight="300" fill="rgba(56,60,36,.58)" letter-spacing="5.2">INTERNATIONAL</text>
+      </svg>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#page2">Insights</a></li>
+      <li><a href="#contato" class="nav-cta">Get in Touch</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-pattern"></div>
+    <div class="hero-main">
+
+      <!-- Left -->
+      <div class="hero-left">
+        <div class="hl-clip">
+          <h1>
+            <span class="hl" data-ek="h1-0">Conversations</span>
+            <span class="hl" data-ek="h1-1">that <em>simplify</em></span>
+            <span class="hl" data-ek="h1-2">relationships.</span>
+          </h1>
+        </div>
+        <p class="hero-sub" data-ek="hero-sub">CFG works with prevention, mediation, and strategic negotiation — grounded in confidentiality, transparency, and results. Building autonomy and trust for every client.</p>
+        <div class="hero-btns">
+          <a href="#contato" class="btn btn-teal">Get in Touch</a>
+          <a href="#page2" class="btn btn-ghost">Explore</a>
+        </div>
+        <div class="hero-stats">
+          <div class="stat-item">
+            <div class="stat-n" data-count="16" data-suffix="+">0</div>
+            <div class="stat-l" data-ek="stat-l-0">Years of Experience</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-12">
+              <div class="stat-12-sm">active neutral on</div>
+              <div class="stat-n" data-count="12" data-ek="stat-1">0</div>
+              <div class="stat-12-sm">mediation chambers</div>
+            </div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-n" style="font-size:1.6rem;letter-spacing:.03em;">US &amp; Brazil</div>
+            <div class="stat-l">Presence</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: About / Bio -->
+      <div id="contato" class="hero-right">
+        <div class="bio-col">
+          <div class="photo-area r">
+            <div class="photo-block">
+              <img src="claudia.jpeg" alt="Claudia Frankel Grosman" />
+            </div>
+            <div>
+              <p class="section-label" style="margin-bottom:.4rem;">About</p>
+              <div class="bio-name" data-ek="bio-name">Claudia<br/><em>Frankel Grosman</em></div>
+              <div class="bio-role" data-ek="bio-role">Founding Partner</div>
+            </div>
+          </div>
+
+          <!-- Default: FGC-focused -->
+          <p class="bio-p r d1" data-ek="bio-p">Claudia Frankel Grosman brings over 16 years of experience supporting families and family businesses through complex conversations involving alignment, negotiation, conflict resolution, continuity, and real estate matters. In 2026, she joined FGC Advisors to bring a more complete view of wealth planning — one that goes beyond structures and strategy to consider the human dynamics that shape continuity, governance, legacy, and decisions involving family wealth and real estate.</p>
+
+          <button class="bio-toggle-btn r d2" id="bioToggle" onclick="(function(){var e=document.getElementById('bioExp');var b=document.getElementById('bioToggle');e.classList.toggle('open');b.classList.toggle('open');b.querySelector('.bio-toggle-label').textContent=e.classList.contains('open')?'Close profile':'Full profile';})()">
+            <span class="bio-toggle-label">Full profile</span>
+            <span class="bio-toggle-arrow">↓</span>
+          </button>
+
+          <!-- Expandable: Brazil experience + education + contact -->
+          <div class="bio-expandable" id="bioExp">
+            <div class="cred-list" style="margin-top:.2rem;">
+              <div class="cred-section-label">Experience</div>
+              <div class="cred"><div class="cred-dot"></div>Dialogue Facilitation Expert — FGC Advisors <span class="cred-date">2026–present</span></div>
+              <div class="cred"><div class="cred-dot"></div>Founding Partner — CFG International <span class="cred-date">2026–present</span></div>
+              <div class="cred"><div class="cred-dot"></div>Conflict Management Consultant — Mosaico Parceria e Soluções <span class="cred-date">2024–2025</span></div>
+              <div class="cred"><div class="cred-dot"></div>Mentorship Programme Coordinator — Insper <span class="cred-date">2023–2025</span></div>
+              <div class="cred"><div class="cred-dot"></div>Faculty &amp; Practice Supervisor — Instituto Mediativa</div>
+              <div class="cred"><div class="cred-dot"></div>Co-creator, DailyTools — communication training programme <span class="cred-date">2020–present</span></div>
+              <div class="cred"><div class="cred-dot"></div>Active neutral on the panels of 12 mediation chambers in Brazil <span class="cred-date">2018–present</span></div>
+              <div class="cred-section-label" style="margin-top:.5rem;">Education</div>
+              <div class="cred"><div class="cred-dot"></div>Law Degree — FMU <span class="cred-date">1993</span></div>
+              <div class="cred"><div class="cred-dot"></div>MBA — Insper <span class="cred-date">2009</span></div>
+              <div class="cred"><div class="cred-dot"></div>Real Estate Business Law Specialisation — SECOVI São Paulo <span class="cred-date">2018</span></div>
+              <div class="cred"><div class="cred-dot"></div>IMI Certified Mediator — ADR Group London</div>
+              <div class="cred"><div class="cred-dot"></div>MIT Executive Education — Negotiation</div>
+            </div>
+
+            <div class="contact-strip" style="margin-top:1.2rem;">
+              <div class="c-item">
+                <div class="c-ico"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+                <a href="mailto:cfgros@gmail.com" class="c-link">cfgros@gmail.com</a>
+              </div>
+              <div class="c-item">
+                <div class="c-ico"><svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></div>
+                <a href="https://www.linkedin.com/in/claudia-frankel-grosman/" target="_blank" class="c-link">linkedin.com/in/claudia-frankel-grosman</a>
+              </div>
+              <a href="mailto:cfgros@gmail.com" class="btn btn-teal" style="margin-top:.5rem;text-align:center;">Start a Dialogue</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Marquee strip — bottom of hero -->
+    <div class="marquee-strip">
+      <div class="marquee-track">
+        <span>Mediation</span><span class="marquee-sep">·</span>
+        <span>Negotiation</span><span class="marquee-sep">·</span>
+        <span>Consulting</span><span class="marquee-sep">·</span>
+        <span>Training</span><span class="marquee-sep">·</span>
+        <span>Mentoring</span><span class="marquee-sep">·</span>
+        <span>Conflict Resolution</span><span class="marquee-sep">·</span>
+        <span>Dialogue</span><span class="marquee-sep">·</span>
+        <span>Facilitation</span><span class="marquee-sep">·</span>
+        <span>Relationships</span><span class="marquee-sep">·</span>
+        <span>Mediation</span><span class="marquee-sep">·</span>
+        <span>Negotiation</span><span class="marquee-sep">·</span>
+        <span>Consulting</span><span class="marquee-sep">·</span>
+        <span>Training</span><span class="marquee-sep">·</span>
+        <span>Mentoring</span><span class="marquee-sep">·</span>
+        <span>Conflict Resolution</span><span class="marquee-sep">·</span>
+        <span>Dialogue</span><span class="marquee-sep">·</span>
+        <span>Facilitation</span><span class="marquee-sep">·</span>
+        <span>Relationships</span><span class="marquee-sep">·</span>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- PAGE 2: Insights -->
+  <section id="page2">
+    <div class="page2-grid">
+      <div class="tl-head r">
+        <h2>CFG <em>Insights</em></h2>
+      </div>
+      <div class="tile-grid">
+
+          <div class="tile r">
+            <span class="tile-type" data-ek="tile-type-0">Book</span>
+            <div class="tile-title" data-ek="tile-t-0">Mediação no Judiciário: Teoria na Prática e Prática na Teoria</div>
+            <p class="tile-desc" data-ek="tile-d-0">Co-edited and co-authored by Claudia. A foundational reference on mediation theory and practice within Brazil's judicial system.</p>
+            <a href="https://play.google.com/store/books/details/Media%C3%A7%C3%A3o_no_judici%C3%A1rio_Teoria_na_pr%C3%A1tica_e_pr%C3%A1tica?id=diY9BAAAQBAJ" target="_blank" class="tile-link">View Book</a>
+          </div>
+
+          <div class="tile r d1">
+            <span class="tile-type" data-ek="tile-type-1">Book Chapter</span>
+            <div class="tile-title" data-ek="tile-t-1">O Poder do Terceiro Imparcial</div>
+            <p class="tile-desc" data-ek="tile-d-1">Chapter by Claudia Frankel Grosman. In: <em>A Mediação de Conflitos no Brasil: Memórias e Vivências</em> — co-organized by Claudia Frankel Grosman et al. Also includes her article <em>Aprendizados e Significados de uma Trajetória</em>.</p>
+            <a href="https://www.amazon.com.br/Media%C3%A7%C3%A3o-Conflitos-Brasil-Mem%C3%B3rias-Viv%C3%AAncias/dp/6587953492" target="_blank" class="tile-link">View Book</a>
+          </div>
+
+          <div class="tile r d2">
+            <span class="tile-type" data-ek="tile-type-3">Article</span>
+            <div class="tile-title" data-ek="tile-t-3">Cláusulas de Solução de Conflitos nos Contratos Imobiliários: Guia Prático para Advogados e Contratantes</div>
+            <p class="tile-desc" data-ek="tile-d-3">Article by Claudia Frankel Grosman. In: <em>Arbitragem, Mediação e Dispute Board no Mercado Imobiliário</em> — co-organized by Claudia Frankel Grosman et al., published by IBRADIM.</p>
+            <a href="https://ibradim.org.br/clausulas-de-solucao-de-conflitos-nos-contratos-imobiliarios-guia-pratico-para-advogados-e-contratantes/" target="_blank" class="tile-link">Read Article</a>
+          </div>
+
+          <div class="tile r d2">
+            <span class="tile-type" data-ek="tile-type-4">Podcast</span>
+            <div class="tile-title" data-ek="tile-t-4">Comunicação Produtiva e Conflitos Empresariais — Vol. 1</div>
+            <p class="tile-desc" data-ek="tile-d-4">Claudia's podcast produced with Insper on productive communication and how businesses can navigate internal conflict constructively and sustainably.</p>
+            <a href="https://tr.ee/z27qLz9OAl" target="_blank" class="tile-link">Listen Now</a>
+          </div>
+
+          <div class="tile r d2">
+            <span class="tile-type" data-ek="tile-type-5">Podcast</span>
+            <div class="tile-title" data-ek="tile-t-5">Comunicação Produtiva e Conflitos Empresariais — Vol. 2</div>
+            <p class="tile-desc" data-ek="tile-d-5">The second volume of Claudia's Insper podcast series — continuing the conversation on communication, conflict, and constructive dialogue in business contexts.</p>
+            <a href="https://tr.ee/20C_89-BTF" target="_blank" class="tile-link">Listen Now</a>
+          </div>
+
+          <div class="tile r d3">
+            <span class="tile-type" data-ek="tile-type-6">Course</span>
+            <div class="tile-title" data-ek="tile-t-6">DailyTools: Ferramentas de Comunicação</div>
+            <p class="tile-desc" data-ek="tile-d-6">Practical communication tools for everyday professional life — designed for teams, leaders, and organisations seeking healthier dialogue and dynamics.</p>
+            <a href="https://www.instagram.com/dailytools.br/" target="_blank" class="tile-link">View on Instagram</a>
+          </div>
+
+        </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <a href="#hero" class="logo">
+      <svg height="46" viewBox="0 0 240 72" fill="none">
+        <text x="2" y="46" font-family="Cormorant, Georgia, serif" font-size="48" font-weight="400" fill="#215732" letter-spacing="3">CFG</text>
+        <text x="2" y="64" font-family="DM Sans, sans-serif" font-size="11" font-weight="300" fill="rgba(56,60,36,.5)" letter-spacing="5.2">INTERNATIONAL</text>
+      </svg>
+    </a>
+    <div class="f-copy" data-ek="f-copy">© 2026 CFG International · Claudia Frankel Grosman</div>
+  </footer>
+
+  <script>
+  /* ══ DISC NETWORK (FGC-style hub-and-spoke) ══ */
+  (function() {
+    var container = document.getElementById('discNet');
+    var svg       = document.getElementById('discNetSvg');
+    var hub       = document.getElementById('discHub');
+    if (!container || !svg || !hub) return;
+    var NS = 'http://www.w3.org/2000/svg';
+
+    var HUB = { bx: 50, by: 50, cx: 50, cy: 50 };
+
+    /* Concentric rings */
+    [16, 28, 40].forEach(function(r) {
+      var c = document.createElementNS(NS, 'circle');
+      c.setAttribute('cx', '50'); c.setAttribute('cy', '50'); c.setAttribute('r', String(r));
+      c.classList.add('disc-ring');
+      svg.appendChild(c);
+    });
+
+    /* 5 CFG services — pentagon layout */
+    var NODES = [
+      { name: 'Mediation',   bx: 50, by: 8,
+        desc: 'Impartial facilitation in a safe, confidential setting. All parties design the solution together — expertise in corporate, family, succession, and real estate matters.' },
+      { name: 'Training',    bx: 86, by: 32,
+        desc: 'Customised courses in productive and non-violent communication, designed for businesses and family enterprises navigating complex relationships.' },
+      { name: 'Negotiation', bx: 74, by: 80,
+        desc: 'Active advisory in negotiations — an experienced, unbiased specialist at the table to drive consensus and protect long-term relationships.' },
+      { name: 'Consulting',  bx: 26, by: 80,
+        desc: 'Diagnosing how your organisation handles conflict and building internal capacity to manage it well. Thomas-Kilmann Conflict Mode Instrument (TKI) certified.' },
+      { name: 'Mentoring',   bx: 14, by: 32,
+        desc: 'Structured dialogue between mentor and mentee, across corporate and university environments. CFG trains and accompanies mentor teams.' },
+    ];
+
+    /* Edges: hub spokes + adjacent ring connections */
+    var EDGES = [];
+    for (var i = 0; i < NODES.length; i++) EDGES.push([i, -1]);
+    for (var i = 0; i < NODES.length; i++) EDGES.push([i, (i + 1) % NODES.length]);
+
+    var lineEls = EDGES.map(function(pair) {
+      var line = document.createElementNS(NS, 'line');
+      line.classList.add('disc-net-line');
+      if (pair[1] >= 0) { line.style.strokeDasharray = '1 6'; line.style.opacity = '0.4'; }
+      svg.appendChild(line);
+      return { el: line, a: pair[0], b: pair[1] };
+    });
+
+    /* Detail panel refs */
+    var detailDefault = document.getElementById('discDefault');
+    var detailPanel   = document.getElementById('discPanel');
+    var detailName    = document.getElementById('discPanelName');
+    var detailDesc    = document.getElementById('discPanelDesc');
+
+    var dashOff = 0;
+    var frozen = false, timeOffset = 0, pauseStart = 0;
+    var lastCycle = -1, autoIdx = 0;
+
+    function setActive(idx) {
+      lineEls.forEach(function(l) {
+        l.el.classList.toggle('lit', l.a === idx || l.b === idx);
+      });
+      nodeData.forEach(function(nd, j) { nd.el.classList.toggle('active', j === idx); });
+      detailName.textContent = NODES[idx].name.toUpperCase();
+      detailDesc.textContent = NODES[idx].desc;
+      detailDefault.style.opacity = '0';
+      detailDefault.style.pointerEvents = 'none';
+      detailPanel.classList.add('visible');
+    }
+
+    function clearActive() {
+      lineEls.forEach(function(l) { l.el.classList.remove('lit'); });
+      nodeData.forEach(function(nd) { nd.el.classList.remove('active'); });
+      detailPanel.classList.remove('visible');
+      detailDefault.style.opacity = '1';
+      detailDefault.style.pointerEvents = '';
+    }
+
+    /* Build node DOM elements */
+    var nodeData = [];
+    NODES.forEach(function(n, i) {
+      var div = document.createElement('div');
+      div.className = 'disc-node';
+      div.style.transitionDelay = (0.6 + i * 0.12) + 's';
+      div.innerHTML =
+        '<div class="disc-node-inner">' +
+          '<span class="disc-node-dot"></span>' +
+          '<span class="disc-node-label">' + n.name + '</span>' +
+        '</div>';
+
+      div.addEventListener('mouseenter', function() {
+        if (!frozen) pauseStart = performance.now();
+        frozen = true;
+        setActive(i);
+      });
+      div.addEventListener('mouseleave', function() {
+        timeOffset += performance.now() - pauseStart;
+        frozen = false;
+        clearActive();
+        lastCycle = -1; /* restart 5s cycle timer after hover ends */
+      });
+
+      container.appendChild(div);
+      var dx = n.bx - 50, dy = n.by - 50;
+      nodeData.push({
+        el: div,
+        bx: n.bx, by: n.by, cx: n.bx, cy: n.by,
+        radius: Math.sqrt(dx * dx + dy * dy),
+        baseAngle: Math.atan2(dy, dx),
+        swayPhase: Math.random() * Math.PI * 2,
+      });
+    });
+
+    /* Start when scrolled into view */
+    var io = new IntersectionObserver(function(entries) {
+      entries.forEach(function(e) {
+        if (e.isIntersecting) {
+          container.classList.add('on');
+          hub.style.opacity = '1';
+          requestAnimationFrame(tick);
+          io.unobserve(container);
+        }
+      });
+    }, { threshold: 0.1 });
+    io.observe(container);
+
+    function tick(t) {
+      var at = t - timeOffset;
+      dashOff -= 0.12;
+
+      if (!frozen) {
+        /* Auto-cycle: advance to next node every 5 s */
+        if (lastCycle < 0) lastCycle = at;
+        if (at - lastCycle >= 5000) {
+          lastCycle = at;
+          autoIdx = (autoIdx + 1) % NODES.length;
+          setActive(autoIdx);
+          /* briefly show the card, then clear after 3 s */
+          var snapIdx = autoIdx;
+          setTimeout(function() {
+            if (!frozen && autoIdx === snapIdx) clearActive();
+          }, 3000);
+        }
+
+        /* Hub gentle drift — only while not hovered */
+        HUB.cx = HUB.bx + 0.15 * Math.sin(at * 0.0003);
+        HUB.cy = HUB.by + 0.12 * Math.sin(at * 0.0004 + 1);
+        hub.style.left = HUB.cx + '%';
+        hub.style.top  = HUB.cy + '%';
+
+        /* Node slow orbit + sway — only while not hovered */
+        var rotOffset = at * 0.0000524;
+        nodeData.forEach(function(n) {
+          var angle = n.baseAngle + rotOffset;
+          var sway  = 0.8 * Math.sin(at * 0.0008 + n.swayPhase);
+          var r = n.radius + sway;
+          n.cx = 50 + r * Math.cos(angle);
+          n.cy = 50 + r * Math.sin(angle);
+          n.el.style.left = n.cx + '%';
+          n.el.style.top  = n.cy + '%';
+        });
+      }
+
+      /* SVG lines always track current node positions */
+      lineEls.forEach(function(l) {
+        var a   = nodeData[l.a];
+        var bx2 = (l.b === -1) ? HUB.cx : nodeData[l.b].cx;
+        var by2 = (l.b === -1) ? HUB.cy : nodeData[l.b].cy;
+        l.el.setAttribute('x1', a.cx);  l.el.setAttribute('y1', a.cy);
+        l.el.setAttribute('x2', bx2);   l.el.setAttribute('y2', by2);
+        l.el.style.strokeDashoffset = dashOff;
+      });
+
+      requestAnimationFrame(tick);
+    }
+  })();
+
+
+  /* ══ SCROLL REVEAL ══ */
+  (function(){
+    var els = document.querySelectorAll('.r');
+    var ro = new IntersectionObserver(function(entries) {
+      entries.forEach(function(e) {
+        if (e.isIntersecting) { e.target.classList.add('on'); ro.unobserve(e.target); }
+      });
+    }, { threshold: 0.12 });
+    els.forEach(function(el) { ro.observe(el); });
+  })();
+
+  /* ══ PROGRESS BAR ══ */
+  (function(){
+    var bar = document.getElementById('prog');
+    if (!bar) return;
+    window.addEventListener('scroll', function() {
+      var pct = window.scrollY / (document.body.scrollHeight - window.innerHeight) * 100;
+      bar.style.width = Math.min(pct, 100) + '%';
+    }, { passive: true });
+  })();
+
+  /* ══ NAV SCROLL ══ */
+  (function(){
+    var nav = document.getElementById('nav');
+    if (!nav) return;
+    window.addEventListener('scroll', function() {
+      nav.classList.toggle('scrolled', window.scrollY > 40);
+    }, { passive: true });
+  })();
+
+  /* ══ STAT COUNTERS ══ */
+  (function(){
+    var stats = document.querySelectorAll('.stat-n[data-count]');
+    var so = new IntersectionObserver(function(entries) {
+      entries.forEach(function(e) {
+        if (!e.isIntersecting) return;
+        var el = e.target;
+        var target = +el.dataset.count;
+        var suffix = el.dataset.suffix || '';
+        var cur = 0, step = Math.ceil(target / 40);
+        var t = setInterval(function() {
+          cur = Math.min(cur + step, target);
+          el.textContent = cur + suffix;
+          if (cur >= target) clearInterval(t);
+        }, 35);
+        so.unobserve(el);
+      });
+    }, { threshold: 0.5 });
+    stats.forEach(function(s) { so.observe(s); });
+  })();
+
+  /* ══ HERO PARALLAX ══ */
+  (function(){
+    var heroLeft = document.querySelector('.hero-left');
+    if (!heroLeft) return;
+    window.addEventListener('scroll', function() {
+      var y = window.scrollY;
+      if (y < window.innerHeight) {
+        heroLeft.style.transform = 'translateY(' + (y * 0.06) + 'px)';
+      }
+    }, { passive: true });
+  })();
+
+  /* ══ TILE STAGGER ON ENTER ══ */
+  (function(){
+    var tiles = document.querySelectorAll('.tile');
+    var seen = false;
+    var to = new IntersectionObserver(function(entries) {
+      entries.forEach(function(e) {
+        if (e.isIntersecting && !seen) {
+          seen = true;
+          tiles.forEach(function(tile, i) {
+            setTimeout(function() {
+              tile.style.opacity = '1';
+              tile.style.transform = 'none';
+            }, i * 60);
+          });
+          to.disconnect();
+        }
+      });
+    }, { threshold: 0.1 });
+    if (tiles[0]) {
+      tiles.forEach(function(t) {
+        t.style.opacity = '0';
+        t.style.transform = 'translateY(14px)';
+        t.style.transition = 'opacity .55s ease, transform .55s cubic-bezier(.22,1,.36,1), background .28s, box-shadow .28s';
+      });
+      to.observe(tiles[0]);
+    }
+  })();
+
+  </script>
+
+  <!-- ══ EDIT MODE ══ -->
+  <style id="cfg-edit-css">
+    #cfg-edit-ui {
+      position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 9999;
+      display: flex; flex-direction: column; align-items: flex-end; gap: .55rem;
+      font-family: 'DM Sans', sans-serif;
+    }
+    #cfg-edit-toggle {
+      width: 44px; height: 44px; border-radius: 50%;
+      background: #215732; color: #fafaf8; border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 2px 16px rgba(33,87,50,0.38);
+      transition: background .2s, transform .15s;
+      font-size: 1.05rem; line-height: 1;
+    }
+    #cfg-edit-toggle:hover { background: #2d7344; transform: scale(1.08); }
+    #cfg-edit-save {
+      display: none; background: #215732; color: #fafaf8;
+      border: none; cursor: pointer; padding: .55rem 1.15rem;
+      font-family: 'DM Sans', sans-serif; font-size: .56rem; letter-spacing: .2em;
+      text-transform: uppercase; transition: background .2s;
+      box-shadow: 0 2px 12px rgba(33,87,50,0.28); white-space: nowrap;
+    }
+    #cfg-edit-save:hover { background: #2d7344; }
+    #cfg-edit-label {
+      display: none; font-size: .48rem; letter-spacing: .2em; text-transform: uppercase;
+      color: rgba(56,60,36,.45); text-align: right;
+    }
+    body.cfg-edit-mode .cfg-editable-zone {
+      outline: 1.5px dashed rgba(33,87,50,0.25) !important;
+      outline-offset: 6px;
+    }
+    body.cfg-edit-mode .cfg-editable-zone:focus-within {
+      outline: 2px solid rgba(33,87,50,0.5) !important;
+    }
+    body.cfg-edit-mode .tile-desc {
+      -webkit-line-clamp: unset !important;
+      display: block !important;
+      overflow: visible !important;
+    }
+  </style>
+
+  <div id="cfg-edit-ui">
+    <div id="cfg-edit-label">Edit mode — click any text to edit</div>
+    <button id="cfg-edit-save">Save file ↓</button>
+    <button id="cfg-edit-toggle" title="Enter edit mode">✏️</button>
+  </div>
+
+  <script id="cfg-edit-js">
+  (function() {
+    var STORE_KEY = 'cfg_page_v2';
+    var editMode = false;
+    var saveTimer = null;
+
+    // These containers cover the whole page's editable content
+    var ZONES = [
+      { sel: '.hero-left',   key: 'hl' },
+      { sel: '.bio-col',     key: 'bc' },
+      { sel: '.page2-grid',  key: 'p2' },
+      { sel: 'footer',       key: 'ft' },
+    ];
+
+    function saveAll() {
+      try {
+        var d = {};
+        ZONES.forEach(function(z) {
+          var el = document.querySelector(z.sel);
+          if (el) d[z.key] = el.innerHTML;
+        });
+        localStorage.setItem(STORE_KEY, JSON.stringify(d));
+      } catch(e) {}
+    }
+
+    function loadSaved() {
+      try {
+        var d = JSON.parse(localStorage.getItem(STORE_KEY) || '{}');
+        ZONES.forEach(function(z) {
+          if (d[z.key]) {
+            var el = document.querySelector(z.sel);
+            if (el) el.innerHTML = d[z.key];
+          }
+        });
+      } catch(e) {}
+    }
+
+    function scheduleSave() {
+      clearTimeout(saveTimer);
+      saveTimer = setTimeout(saveAll, 600);
+    }
+
+    function toggleEditMode() {
+      editMode = !editMode;
+      document.body.classList.toggle('cfg-edit-mode', editMode);
+
+      ZONES.forEach(function(z) {
+        var el = document.querySelector(z.sel);
+        if (!el) return;
+        el.contentEditable = editMode ? 'true' : 'false';
+        el.classList.toggle('cfg-editable-zone', editMode);
+      });
+
+      var toggle = document.getElementById('cfg-edit-toggle');
+      var saveBtn = document.getElementById('cfg-edit-save');
+      var label   = document.getElementById('cfg-edit-label');
+      toggle.title       = editMode ? 'Exit edit mode' : 'Enter edit mode';
+      toggle.textContent = editMode ? '✕' : '✏️';
+      saveBtn.style.display = editMode ? 'block' : 'none';
+      label.style.display   = editMode ? 'block' : 'none';
+    }
+
+    function exportHTML() {
+      var clone = document.documentElement.cloneNode(true);
+      ['cfg-edit-ui','cfg-edit-css','cfg-edit-js'].forEach(function(id) {
+        var el = clone.querySelector('#' + id); if (el) el.remove();
+      });
+      clone.querySelectorAll('[contenteditable]').forEach(function(el) {
+        el.removeAttribute('contenteditable');
+      });
+      clone.querySelectorAll('.cfg-editable-zone').forEach(function(el) {
+        el.classList.remove('cfg-editable-zone');
+      });
+      var body = clone.querySelector('body');
+      if (body) body.classList.remove('cfg-edit-mode');
+      var html = '<!DOCTYPE html>\n' + clone.outerHTML;
+      var blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+      var a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'cfg-international.html';
+      document.body.appendChild(a); a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(a.href);
+    }
+
+    document.getElementById('cfg-edit-toggle').addEventListener('click', toggleEditMode);
+    document.getElementById('cfg-edit-save').addEventListener('click', exportHTML);
+
+    document.addEventListener('input', function(e) {
+      if (editMode) scheduleSave();
+    });
+
+    loadSaved();
+  })();
+  </script>
+</body>
+</html>
