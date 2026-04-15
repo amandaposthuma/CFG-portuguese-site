@@ -315,6 +315,20 @@
       font-size: .6rem; letter-spacing: .22em; text-transform: uppercase;
       color: var(--olive); padding: .6rem 0 .25rem; font-weight: 500;
     }
+    /* Bio paragraph clamp */
+    .bio-p-wrap { position: relative; }
+    .bio-p-wrap.clamped .bio-p {
+      display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .bio-read-btn {
+      display: inline-flex; align-items: center; gap: .4rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: .52rem; letter-spacing: .2em; text-transform: uppercase;
+      color: var(--olive); cursor: pointer; border: none; background: none;
+      padding: .4rem 0 0; transition: color .2s;
+    }
+    .bio-read-btn:hover { color: var(--olive2); }
+
     /* Bio expand/collapse */
     .bio-toggle-btn {
       display: inline-flex; align-items: center; gap: .5rem;
@@ -560,7 +574,10 @@
           </div>
 
           <!-- Default: FGC-focused -->
-          <p class="bio-p r d1" data-ek="bio-p">Claudia Frankel Grosman brings over 16 years of experience supporting families and family businesses through complex conversations involving alignment, negotiation, conflict resolution, continuity, and real estate matters. In 2026, she joined FGC Advisors to bring a more complete view of wealth planning — one that goes beyond structures and strategy to consider the human dynamics that shape continuity, governance, legacy, and decisions involving family wealth and real estate.</p>
+          <div class="bio-p-wrap clamped r d1">
+            <p class="bio-p" data-ek="bio-p">Claudia Frankel Grosman brings over 16 years of experience supporting families and family businesses through complex conversations involving alignment, negotiation, conflict resolution, continuity, and real estate matters. In 2026, she joined FGC Advisors to bring a more complete view of wealth planning — one that goes beyond structures and strategy to consider the human dynamics that shape continuity, governance, legacy, and decisions involving family wealth and real estate.</p>
+            <button class="bio-read-btn" onclick="(function(){var w=this.closest('.bio-p-wrap');w.classList.toggle('clamped');this.textContent=w.classList.contains('clamped')?'Read more':'Read less';}).call(this)">Read more</button>
+          </div>
 
           <button class="bio-toggle-btn r d2" id="bioToggle" onclick="(function(){var e=document.getElementById('bioExp');var b=document.getElementById('bioToggle');e.classList.toggle('open');b.classList.toggle('open');b.querySelector('.bio-toggle-label').textContent=e.classList.contains('open')?'Close profile':'Full profile';})()">
             <span class="bio-toggle-label">Full profile</span>
